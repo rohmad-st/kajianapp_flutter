@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:kajianapp/models/category.dart';
 import 'package:kajianapp/models/chapter.dart';
+import 'package:kajianapp/repository/category_repository.dart';
 import 'package:kajianapp/repository/chapter_repository.dart';
+import 'package:kajianapp/widgets/categories_container.dart';
 import 'package:kajianapp/widgets/chapter_tile.dart';
 
 class Home extends StatefulWidget {
@@ -10,13 +13,22 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   final title = 'Kajian App';
+  List<Category> _categories = <Category>[];
   List<Chapter> _chapters = <Chapter>[];
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    listenForCategories();
     listenForChapters();
+  }
+
+  void listenForCategories() async {
+    final Stream<Category> stream = await getCategories();
+
+    stream.listen(
+        (Category category) => setState(() => _categories.add(category)));
   }
 
   void listenForChapters() async {
@@ -32,9 +44,16 @@ class _HomeState extends State<Home> {
         title: Text(title),
         centerTitle: true,
       ),
-      body: ListView.builder(
-        itemCount: _chapters.length,
-        itemBuilder: (context, index) => ChapterTile(_chapters[index]),
+      body: Column(
+        children: <Widget>[
+          CategoriesContainer(_categories),
+          Expanded(
+            child: ListView.builder(
+              itemCount: _chapters.length,
+              itemBuilder: (context, index) => ChapterTile(_chapters[index]),
+            ),
+          )
+        ],
       ),
       bottomNavigationBar: BottomAppBar(
         shape: CircularNotchedRectangle(),

@@ -11,6 +11,7 @@ class ChapterTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
+        Divider(),
         ListTile(
           title: Text(_chapter.name),
           subtitle: Text(_chapter.teacher.name),
