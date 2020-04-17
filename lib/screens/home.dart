@@ -47,6 +47,21 @@ class _HomeState extends State<Home> {
       body: Column(
         children: <Widget>[
           CategoriesContainer(_categories),
+          Container(
+            alignment: AlignmentDirectional.centerStart,
+            margin: EdgeInsets.symmetric(horizontal: 16),
+            child: Text(
+              'Chapter',
+              style: TextStyle(
+                color: Colors.black45,
+                fontWeight: FontWeight.bold,
+                fontSize: 18,
+                letterSpacing: 0.2,
+                height: 1.8,
+              ),
+            ),
+          ),
+          Divider(),
           Expanded(
             child: ListView.builder(
               itemCount: _chapters.length,
