@@ -37,11 +37,11 @@ class _ChapterState extends State<Chapter> {
       initialVideoId: YoutubePlayer.convertUrlToId(_sourceUrl),
       flags: YoutubePlayerFlags(
         mute: false,
-        autoPlay: true,
+        autoPlay: false,
         disableDragSeek: false,
         loop: false,
         isLive: false,
-        forceHideAnnotation: true,
+        forceHideAnnotation: false,
         forceHD: false,
         enableCaption: false,
       ),
@@ -122,7 +122,6 @@ class _ChapterState extends State<Chapter> {
               controller: _controller,
               showVideoProgressIndicator: true,
               progressIndicatorColor: Colors.blueAccent,
-              aspectRatio: 16 / 9,
               topActions: <Widget>[
                 SizedBox(width: 8.0),
                 Expanded(
