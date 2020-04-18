@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kajianapp/models/chapter.dart';
+import 'package:kajianapp/screens/chapter.dart' as Screens;
 
 class ChapterTile extends StatelessWidget {
   final Chapter _chapter;
@@ -10,6 +11,14 @@ class ChapterTile extends StatelessWidget {
     return Column(
       children: <Widget>[
         ListTile(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => Screens.Chapter(chapter: _chapter),
+              ),
+            );
+          },
           title: Text(_chapter.name),
           subtitle: Text(_chapter.teacher.name),
           leading: Container(

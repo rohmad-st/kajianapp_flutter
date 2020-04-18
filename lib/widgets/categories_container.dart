@@ -1,5 +1,4 @@
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:kajianapp/models/category.dart';
 
@@ -10,8 +9,7 @@ class CategoriesContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final String title = 'Categories';
-    final String imageUrl =
-        'https://assets-ouch.icons8.com/thumb/947/863b0d26-acd5-479f-b614-606ce8052f7d.png';
+
     return Column(
       children: <Widget>[
         Container(

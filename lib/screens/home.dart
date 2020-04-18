@@ -18,7 +18,6 @@ class _HomeState extends State<Home> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     listenForCategories();
     listenForChapters();
@@ -77,8 +76,8 @@ class _HomeState extends State<Home> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {},
-        tooltip: 'Category',
-        child: Icon(Icons.list),
+        tooltip: 'Profile',
+        child: Icon(Icons.local_library),
         backgroundColor: Colors.blue,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
