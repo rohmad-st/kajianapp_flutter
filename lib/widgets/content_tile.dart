@@ -5,7 +5,14 @@ class ContentTile extends StatelessWidget {
   final Content _content;
   final int _index;
   final Function _onPlayButtonClicked;
-  ContentTile(this._content, this._index, this._onPlayButtonClicked);
+  final bool _isPlaying;
+
+  ContentTile(
+    this._content,
+    this._index,
+    this._onPlayButtonClicked,
+    this._isPlaying,
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -27,9 +34,11 @@ class ContentTile extends StatelessWidget {
           style: TextStyle(color: Colors.black87),
         ),
         trailing: RawMaterialButton(
-          onPressed: () => _onPlayButtonClicked(_content),
+          onPressed: () {
+            _onPlayButtonClicked(_content);
+          },
           child: Icon(
-            Icons.play_arrow,
+            _isPlaying ? Icons.pause : Icons.play_arrow,
             color: Colors.white,
             size: 18,
           ),
