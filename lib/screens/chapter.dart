@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:kajianapp/models/Contents.dart';
+import 'package:kajianapp/utils/network.dart';
+import 'package:kajianapp/widgets/loading_view.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import 'package:kajianapp/models/chapter.dart' as Models;
 import 'package:kajianapp/models/content.dart';
-import 'package:kajianapp/repository/content_repository.dart';
+import 'package:kajianapp/repository/contents_repository.dart';
 import 'package:kajianapp/widgets/content_tile.dart';
 
 class Chapter extends StatefulWidget {
@@ -15,7 +18,7 @@ class Chapter extends StatefulWidget {
 }
 
 class _ChapterState extends State<Chapter> {
-  List<Content> _contents = <Content>[];
+  Future<Contents> _contents;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
   YoutubePlayerController _controller;
   PlayerState _playerState;
@@ -24,9 +27,9 @@ class _ChapterState extends State<Chapter> {
 
   @override
   void initState() {
-    super.initState();
-    initYoutubePlayer();
     listenForContents();
+    initYoutubePlayer();
+    super.initState();
   }
 
   void initYoutubePlayer() {
@@ -92,10 +95,14 @@ class _ChapterState extends State<Chapter> {
     );
   }
 
-  void listenForContents() async {
-    final Stream<Content> stream = await getContents(widget.chapter.id);
-
-    stream.listen((Content content) => setState(() => _contents.add(content)));
+  void listenForContents() {
+    isConnected().then((internet) {
+      if (internet) {
+        setState(() {
+          _contents = getContents(widget.chapter.id);
+        });
+      }
+    });
   }
 
   @override
@@ -144,45 +151,59 @@ class _ChapterState extends State<Chapter> {
                 _isPlayerReady = true;
               },
               onEnded: (data) {
-                final List<String> _ids = _contents
-                    .map((f) => YoutubePlayer.convertUrlToId(f.sourceUrl));
-                _controller
-                    .load(_ids[(_ids.indexOf(data.videoId) + 1) % _ids.length]);
                 _showSnackBar('Next Video Started!');
               },
             ),
           ),
           Expanded(
-            child: ListView.builder(
-              itemCount: _contents.length,
-              itemBuilder: (context, index) =>
-                  ContentTile(_contents[index], index, (Content content) {
-                final String videoId =
-                    YoutubePlayer.convertUrlToId(content.sourceUrl);
-                final bool isPlaying = _controller.value.isPlaying;
-                final bool contentIsPlaying =
-                    _controller.metadata.videoId == videoId;
+            child: FutureBuilder<Contents>(
+              future: _contents,
+              builder: (context, snapshot) {
+                switch (snapshot.connectionState) {
+                  case ConnectionState.waiting:
+                    return loadingView();
+                    break;
+                  case ConnectionState.active:
+                    break;
+                  case ConnectionState.done:
+                    return ListView.builder(
+                      itemCount: snapshot.data.contents.length,
+                      itemBuilder: (context, index) =>
+                          ContentTile(snapshot.data.contents[index], index,
+                              (Content content) {
+                        final String videoId =
+                            YoutubePlayer.convertUrlToId(content.sourceUrl);
+                        final bool isPlaying = _controller.value.isPlaying;
+                        final bool contentIsPlaying =
+                            _controller.metadata.videoId == videoId;
 
-                if (_isPlayerReady) {
-                  if (contentIsPlaying) {
-                    if (isPlaying) {
-                      _controller.pause();
-                    } else {
-                      _controller.play();
-                    }
-                  } else {
-                    _controller.load(videoId);
-                    _controller.play();
-                  }
-                  setState(() {});
+                        if (_isPlayerReady) {
+                          if (contentIsPlaying) {
+                            if (isPlaying) {
+                              _controller.pause();
+                            } else {
+                              _controller.play();
+                            }
+                          } else {
+                            _controller.load(videoId);
+                            _controller.play();
+                          }
+                          setState(() {});
+                        }
+                      },
+                              // is playing video
+                              _isPlayerReady &&
+                                  _videoMetaData.videoId ==
+                                      YoutubePlayer.convertUrlToId(snapshot
+                                          .data.contents[index].sourceUrl) &&
+                                  _controller.value.isPlaying),
+                    );
+                    break;
+                  case ConnectionState.none:
+                    break;
                 }
+                return loadingView();
               },
-                      // is playing video
-                      _isPlayerReady &&
-                          _videoMetaData.videoId ==
-                              YoutubePlayer.convertUrlToId(
-                                  _contents[index].sourceUrl) &&
-                          _controller.value.isPlaying),
             ),
           ),
         ],

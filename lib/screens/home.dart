@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:kajianapp/models/categories.dart';
 import 'package:kajianapp/models/category.dart';
 import 'package:kajianapp/models/chapter.dart';
-import 'package:kajianapp/repository/category_repository.dart';
-import 'package:kajianapp/repository/chapter_repository.dart';
+import 'package:kajianapp/models/chapters.dart';
+import 'package:kajianapp/repository/categories_repository.dart';
+import 'package:kajianapp/repository/chapters_repository.dart';
+import 'package:kajianapp/utils/network.dart';
 import 'package:kajianapp/widgets/categories_container.dart';
 import 'package:kajianapp/widgets/chapter_tile.dart';
+import 'package:kajianapp/widgets/loading_view.dart';
+import 'package:kajianapp/widgets/nodata_view.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -13,27 +18,23 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   final title = 'Kajian App';
-  List<Category> _categories = <Category>[];
-  List<Chapter> _chapters = <Chapter>[];
+  Future<Categories> _categories;
+  Future<Chapters> _chapters;
 
   @override
   void initState() {
-    super.initState();
-    listenForCategories();
-    listenForChapters();
-  }
-
-  void listenForCategories() async {
-    final Stream<Category> stream = await getCategories();
-
-    stream.listen(
-        (Category category) => setState(() => _categories.add(category)));
-  }
-
-  void listenForChapters() async {
-    final Stream<Chapter> stream = await getChapters();
-
-    stream.listen((Chapter chapter) => setState(() => _chapters.add(chapter)));
+    // load categories & chapters while internet is connected
+    isConnected().then((internet) {
+      if (internet) {
+        setState(() {
+          _categories = getCategories();
+          _chapters = getChapters();
+        });
+      } else {
+        /* Display dialog with no internet connection message */
+      }
+      super.initState();
+    });
   }
 
   @override
@@ -62,10 +63,28 @@ class _HomeState extends State<Home> {
           ),
           Divider(),
           Expanded(
-            child: ListView.builder(
-              itemCount: _chapters.length,
-              itemBuilder: (context, index) => ChapterTile(_chapters[index]),
-            ),
+            child: FutureBuilder<Chapters>(
+                future: _chapters,
+                builder: (context, snapshot) {
+                  switch (snapshot.connectionState) {
+                    case ConnectionState.waiting:
+                      return loadingView();
+                      break;
+                    case ConnectionState.active:
+                      break;
+                    case ConnectionState.done:
+                      return ListView.builder(
+                        itemCount: snapshot.data.chapters.length,
+                        itemBuilder: (context, index) => ChapterTile(
+                          snapshot.data.chapters[index],
+                        ),
+                      );
+                      break;
+                    case ConnectionState.none:
+                      break;
+                  }
+                  return loadingView();
+                }),
           )
         ],
       ),
