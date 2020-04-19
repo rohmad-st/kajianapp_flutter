@@ -23,9 +23,9 @@ class ChapterTile extends StatelessWidget {
           subtitle: Text(_chapter.teacher.name),
           leading: Container(
             margin: EdgeInsets.only(left: 6.0),
-            child: Image.asset(
-              'images/study_illustration.png',
-              height: 50.0,
+            child: Image.network(
+              _chapter.image,
+              width: 60.0,
               fit: BoxFit.fill,
             ),
           ),

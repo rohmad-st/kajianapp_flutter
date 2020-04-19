@@ -20,10 +20,7 @@ class _ChapterState extends State<Chapter> {
   YoutubePlayerController _controller;
   PlayerState _playerState;
   YoutubeMetaData _videoMetaData;
-//  double _volume = 100;
-//  bool _muted = false;
   bool _isPlayerReady = false;
-  String _sourceUrl = 'https://www.youtube.com/watch?v=h_QLMFUu5Uo';
 
   @override
   void initState() {
@@ -34,7 +31,8 @@ class _ChapterState extends State<Chapter> {
 
   void initYoutubePlayer() {
     _controller = YoutubePlayerController(
-      initialVideoId: YoutubePlayer.convertUrlToId(_sourceUrl),
+      initialVideoId:
+          YoutubePlayer.convertUrlToId(widget.chapter.defaultSourceUrl),
       flags: YoutubePlayerFlags(
         mute: false,
         autoPlay: false,
@@ -95,13 +93,9 @@ class _ChapterState extends State<Chapter> {
   }
 
   void listenForContents() async {
-    final Stream<Content> stream = await getContents();
+    final Stream<Content> stream = await getContents(widget.chapter.id);
 
     stream.listen((Content content) => setState(() => _contents.add(content)));
-
-    setState(() {
-      _sourceUrl = _contents.first.sourceUrl;
-    });
   }
 
   @override
@@ -165,19 +159,22 @@ class _ChapterState extends State<Chapter> {
                   ContentTile(_contents[index], index, (Content content) {
                 final String videoId =
                     YoutubePlayer.convertUrlToId(content.sourceUrl);
-                print(
-                    'play video: ${_sourceUrl}: ${videoId}, ${_controller.metadata.videoId}');
-                if (_isPlayerReady &&
-                    _controller.metadata.videoId == videoId &&
-                    _controller.value.isPlaying) {
-                  _controller.pause();
+                final bool isPlaying = _controller.value.isPlaying;
+                final bool contentIsPlaying =
+                    _controller.metadata.videoId == videoId;
+
+                if (_isPlayerReady) {
+                  if (contentIsPlaying) {
+                    if (isPlaying) {
+                      _controller.pause();
+                    } else {
+                      _controller.play();
+                    }
+                  } else {
+                    _controller.load(videoId);
+                    _controller.play();
+                  }
                   setState(() {});
-                } else {
-                  _controller.load(videoId);
-                  _controller.play();
-                  setState(() {
-                    _sourceUrl = content.sourceUrl;
-                  });
                 }
               },
                       // is playing video
