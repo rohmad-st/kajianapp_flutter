@@ -9,3 +9,8 @@ Future<Chapters> getChapters() async {
   final response = await http.get(url);
   return Chapters.fromJson(jsonDecode(response.body));
 }
+
+Future<Chapters> getChaptersByCategory(String categoryId) async {
+  final response = await http.get('$url/category/$categoryId');
+  return Chapters.fromJson(jsonDecode(response.body));
+}
