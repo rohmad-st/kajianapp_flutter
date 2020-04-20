@@ -24,12 +24,28 @@ class ChapterGrid extends StatelessWidget {
                 ),
               );
             },
-            child: Text(
-              _chapter.name,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontWeight: FontWeight.w500,
-                fontSize: 18,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 32),
+              child: Column(
+                children: <Widget>[
+                  Text(
+                    _chapter.name,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 18,
+                    ),
+                  ),
+                  Text(
+                    _chapter.teacher.name,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontWeight: FontWeight.normal,
+                      fontSize: 14,
+                      color: Colors.black45,
+                    ),
+                  ),
+                ],
               ),
             ),
           ),
