@@ -1,6 +1,7 @@
-# kajianapp
+# Kajian Tematik
 
-Kajian Islam application.
+## About
+Adalah Applikasi Mobile yang berisi kumpulan kajian tematik (series).
 
 ## Getting Started
 

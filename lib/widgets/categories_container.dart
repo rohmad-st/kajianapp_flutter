@@ -10,7 +10,7 @@ class CategoriesContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final String title = 'Categories';
+    final String title = 'Kategori';
 
     return Column(
       children: <Widget>[

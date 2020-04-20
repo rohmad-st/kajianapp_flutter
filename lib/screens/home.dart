@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:kajianapp/models/categories.dart';
-import 'package:kajianapp/models/category.dart';
-import 'package:kajianapp/models/chapter.dart';
 import 'package:kajianapp/models/chapters.dart';
 import 'package:kajianapp/repository/categories_repository.dart';
 import 'package:kajianapp/repository/chapters_repository.dart';
 import 'package:kajianapp/utils/network.dart';
+import 'package:kajianapp/widgets/bottom_menu.dart';
 import 'package:kajianapp/widgets/categories_container.dart';
 import 'package:kajianapp/widgets/chapter_tile.dart';
 import 'package:kajianapp/widgets/loading_view.dart';
-import 'package:kajianapp/widgets/nodata_view.dart';
+import 'package:package_info/package_info.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -17,12 +16,18 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  final title = 'Kajian App';
+  String title = 'Kajian Tematik';
   Future<Categories> _categories;
   Future<Chapters> _chapters;
 
   @override
   void initState() {
+    PackageInfo.fromPlatform().then((PackageInfo packageInfo) {
+      setState(() {
+        title = packageInfo.appName;
+      });
+    });
+
     // load categories & chapters while internet is connected
     isConnected().then((internet) {
       if (internet) {
@@ -51,7 +56,7 @@ class _HomeState extends State<Home> {
             alignment: AlignmentDirectional.centerStart,
             margin: EdgeInsets.symmetric(horizontal: 16),
             child: Text(
-              'Chapter',
+              'Pembelajaran',
               style: TextStyle(
                 color: Colors.black45,
                 fontWeight: FontWeight.bold,
@@ -94,9 +99,11 @@ class _HomeState extends State<Home> {
         color: Colors.blue[300],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          showBottomMenu(context);
+        },
         tooltip: 'Profile',
-        child: Icon(Icons.local_library),
+        child: Icon(Icons.menu),
         backgroundColor: Colors.blue,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
