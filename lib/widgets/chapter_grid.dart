@@ -25,19 +25,23 @@ class ChapterGrid extends StatelessWidget {
               );
             },
             child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 32),
+              padding: const EdgeInsets.symmetric(vertical: 28),
               child: Column(
                 children: <Widget>[
                   Text(
                     _chapter.name,
+                    maxLines: 3,
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontWeight: FontWeight.w500,
                       fontSize: 18,
+                      color: Colors.black87,
                     ),
                   ),
+                  SizedBox(height: 12),
                   Text(
                     _chapter.teacher.name,
+                    maxLines: 2,
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontWeight: FontWeight.normal,
@@ -50,16 +54,8 @@ class ChapterGrid extends StatelessWidget {
             ),
           ),
           decoration: BoxDecoration(
-            image: DecorationImage(
-              fit: BoxFit.cover,
-              colorFilter: ColorFilter.mode(
-                Colors.lightBlueAccent.withOpacity(0.3),
-                BlendMode.dstATop,
-              ),
-              image: NetworkImage(_chapter.image),
-            ),
             borderRadius: BorderRadius.all(Radius.circular(8)),
-            color: Colors.grey[400],
+            color: Colors.blue[100],
           ),
         ),
       ],

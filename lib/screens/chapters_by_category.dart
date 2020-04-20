@@ -66,15 +66,59 @@ class _ChaptersByCategoryState extends State<ChaptersByCategory> {
                     case ConnectionState.active:
                       break;
                     case ConnectionState.done:
-                      return GridView.builder(
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                        ),
-                        itemCount: snapshot.data.chapters.length,
-                        itemBuilder: (context, index) => ChapterGrid(
-                          snapshot.data.chapters[index],
-                        ),
-                      );
+                      print('chaoter data: ${snapshot.data.chapters}');
+                      if (snapshot.data.chapters != null) {
+                        if (snapshot.data.chapters.length > 0) {
+                          return GridView.builder(
+                            gridDelegate:
+                                SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2,
+                            ),
+                            itemCount: snapshot.data.chapters.length,
+                            itemBuilder: (context, index) => ChapterGrid(
+                              snapshot.data.chapters[index],
+                            ),
+                          );
+                        } else {
+                          return Flex(
+                            direction: Axis.vertical,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: <Widget>[
+                              Container(
+                                height: 180,
+                                width: 180,
+                                padding: EdgeInsets.symmetric(
+                                  vertical: 8,
+                                  horizontal: 8,
+                                ),
+                                decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                    fit: BoxFit.cover,
+                                    image: AssetImage('images/empty_list.png'),
+                                  ),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(8.0)),
+                                ),
+                              ),
+                              SizedBox(
+                                height: 14,
+                              ),
+                              Text(
+                                'Data pembelajaran masih kosong.',
+                                style: TextStyle(
+                                  color: Colors.black54,
+                                  fontWeight: FontWeight.w600,
+                                  wordSpacing: 1,
+                                  fontSize: 14,
+                                  letterSpacing: 0.2,
+                                  height: 1.8,
+                                ),
+                              )
+                            ],
+                          );
+                        }
+                      }
                       break;
                     case ConnectionState.none:
                       break;
