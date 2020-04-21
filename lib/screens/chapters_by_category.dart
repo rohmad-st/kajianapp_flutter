@@ -35,6 +35,11 @@ class _ChaptersByCategoryState extends State<ChaptersByCategory> {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    /*24 is for notification bar on Android*/
+    final double itemHeight = (size.height - kToolbarHeight - 24) / 2;
+    final double itemWidth = size.width / 2;
+
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.category.name),
@@ -66,22 +71,25 @@ class _ChaptersByCategoryState extends State<ChaptersByCategory> {
                     case ConnectionState.active:
                       break;
                     case ConnectionState.done:
-                      print('chaoter data: ${snapshot.data.chapters}');
                       if (snapshot.data.chapters != null) {
                         if (snapshot.data.chapters.length > 0) {
                           return GridView.builder(
                             gridDelegate:
                                 SliverGridDelegateWithFixedCrossAxisCount(
                               crossAxisCount: 2,
+                              childAspectRatio: (itemWidth / itemHeight),
                             ),
+                            controller:
+                                ScrollController(keepScrollOffset: false),
+                            shrinkWrap: true,
+                            scrollDirection: Axis.vertical,
                             itemCount: snapshot.data.chapters.length,
                             itemBuilder: (context, index) => ChapterGrid(
                               snapshot.data.chapters[index],
                             ),
                           );
                         } else {
-                          return Flex(
-                            direction: Axis.vertical,
+                          return Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: <Widget>[

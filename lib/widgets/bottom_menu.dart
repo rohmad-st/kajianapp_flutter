@@ -5,12 +5,8 @@ import 'package:kajianapp/screens/about.dart';
 
 void contactUs(String appVersion, String buildNumber) {
   final String email = 'kajiantematikapp@gmail.com';
-  final String subject = '[KAJIAN TEMATIK ANDROID]';
-  final String body = 'Bismillah.\n'
-      'Assalamualaikum warahmatullah\n\n\n\n\n\n\n'
-      '---------------------------------------------------------------\n'
-      ' App version: $appVersion.$buildNumber\n'
-      '---------------------------------------------------------------\n';
+  final String subject = 'KAJIAN TEMATIK ANDROID $appVersion ($buildNumber)';
+  final String body = 'Bismillah.\nAssalamualaikum warahmatullah\n\n';
   final String url = 'mailto:$email?subject=$subject&body=$body';
   launch(url);
 }

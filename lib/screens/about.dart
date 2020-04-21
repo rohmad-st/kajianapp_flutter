@@ -47,7 +47,7 @@ class _AboutState extends State<About> {
                   ),
                 ),
                 Text(
-                  'versi ${widget.version}.${widget.buildNumber}',
+                  'Versi ${widget.version} (${widget.buildNumber})',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: Colors.black45,
@@ -64,8 +64,8 @@ class _AboutState extends State<About> {
                       'Insyaallah, bisa membantu antum untuk belajar Agama Islam lebih mudah.\n'
                       '${widget.appName} mengelompokkan setiap kajian yang di ampu oleh Ustadz kedalam satu "Pembelajaran".\n'
                       'Dengan begitu, diharapkan akan mempermudah antum guna memilih kajian apa yang hendak diikuti.\n\n'
-                      'Adapun untuk data, saat ini kami masih mengumpulkan link video dari youtube ke dalam server kami.\n'
-                      'Jadi di aplikasi ini, semua video yang anda lihat di streaming secara langsung tanpa menyimpan kedalam penyimpanan internal antum.\n\n'
+                      'Adapun untuk data, saat ini kami masih mengumpulkan link video dari Youtube ke dalam server kami.\n'
+                      'Jadi di aplikasi ini, semua video di streaming secara langsung tanpa menyimpan kedalam penyimpanan internal.\n\n'
                       'Aplikasi ini masih dalam tahap "Beta". '
                       'Jadi masih sangat butuh saran dan kritik dari antum, supaya aplikasi ini terus tumbuh menjadi lebih baik lagi.\n\n'
                       'Untuk itu jika antum mempunyai kritik, saran, dan support dalam bentuk apapun, termasuk jika ingin berkontribusi mengembangkan aplikasi ini. '

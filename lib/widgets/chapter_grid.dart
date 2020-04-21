@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:kajianapp/models/chapter.dart';
 import 'package:kajianapp/screens/chapter.dart' as Screens;
@@ -9,6 +10,7 @@ class ChapterGrid extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      mainAxisSize: MainAxisSize.max,
       children: <Widget>[
         Container(
           height: 180,
