@@ -30,6 +30,7 @@
 .pub-cache/
 .pub/
 /build/
+**/key.properties
 
 # Web related
 lib/generated_plugin_registrant.dart
@@ -38,4 +39,3 @@ lib/generated_plugin_registrant.dart
 !/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
 
 *.backup.*
-key.properties
