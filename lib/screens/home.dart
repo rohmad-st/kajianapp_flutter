@@ -52,44 +52,51 @@ class _HomeState extends State<Home> {
       body: Column(
         children: <Widget>[
           CategoriesContainer(_categories),
-          Container(
-            alignment: AlignmentDirectional.centerStart,
-            margin: EdgeInsets.symmetric(horizontal: 16),
-            child: Text(
-              'Pembelajaran',
-              style: TextStyle(
-                color: Colors.black45,
-                fontWeight: FontWeight.bold,
-                fontSize: 18,
-                letterSpacing: 0.2,
-                height: 1.8,
-              ),
-            ),
-          ),
-          Divider(),
           Expanded(
             child: FutureBuilder<Chapters>(
-                future: _chapters,
-                builder: (context, snapshot) {
-                  switch (snapshot.connectionState) {
-                    case ConnectionState.waiting:
-                      return loadingView();
-                      break;
-                    case ConnectionState.active:
-                      break;
-                    case ConnectionState.done:
-                      return ListView.builder(
-                        itemCount: snapshot.data.chapters.length,
-                        itemBuilder: (context, index) => ChapterTile(
-                          snapshot.data.chapters[index],
+              future: _chapters,
+              builder: (context, snapshot) {
+                switch (snapshot.connectionState) {
+                  case ConnectionState.waiting:
+                    return loadingView();
+                    break;
+                  case ConnectionState.active:
+                    break;
+                  case ConnectionState.done:
+                    return Column(
+                      children: <Widget>[
+                        Container(
+                          alignment: AlignmentDirectional.centerStart,
+                          margin: EdgeInsets.symmetric(horizontal: 16),
+                          child: Text(
+                            'Pembelajaran',
+                            style: TextStyle(
+                              color: Colors.black45,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18,
+                              letterSpacing: 0.2,
+                              height: 1.8,
+                            ),
+                          ),
                         ),
-                      );
-                      break;
-                    case ConnectionState.none:
-                      break;
-                  }
-                  return loadingView();
-                }),
+                        Divider(),
+                        Expanded(
+                          child: ListView.builder(
+                            itemCount: snapshot.data.chapters.length,
+                            itemBuilder: (context, index) => ChapterTile(
+                              snapshot.data.chapters[index],
+                            ),
+                          ),
+                        ),
+                      ],
+                    );
+                    break;
+                  case ConnectionState.none:
+                    break;
+                }
+                return loadingView();
+              },
+            ),
           )
         ],
       ),
